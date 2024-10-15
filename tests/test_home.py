@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+import os
 from seleniumbase import BaseCase
 from utils import utilities
 from utils.utilities import Utils
@@ -9,11 +11,15 @@ class HomeTest(BaseCase):
         super().setUp()
 
     def initialize_test(self):
+        load_dotenv()
+        url = os.getenv("LSP_URL")
+        username = os.getenv("LSP_USERNAME")
+        password = os.getenv("LSP_PASSWORD")
+
         self.maximize_window()
-        self.open("https://mingle-cqa-portal.cqa.inforcloudsuite.com/v2/LCLQA_AX1/59b159d4-4a16-422e-bedf-d57a5b0f139c")
-        #TODO: Use environment variables for username and password
-        self.send_keys("//input[@id='username']", "")
-        self.send_keys("//input[@id='pass']", "")
+        self.open(url)
+        self.send_keys("//input[@id='username']", username)
+        self.send_keys("//input[@id='pass']", password)
         self.click("//button[@title = 'Sign in']")
 
     def select_ae_to_test(self, accounting_entity):
@@ -63,16 +69,23 @@ class HomeTest(BaseCase):
         self.utils.wait_for_loading_invisible()
         self.utils.user_control_buttons("add-button")
         self.utils.switch_to_main_frame()
-        self.utils.combobox_input("FormCollectionGrid", "InvoiceIDComboBox")
-        self.utils.user_control_buttons("save-button")
 
+        #For combobox inputs
+        button_click = "save-button"
+        combobox_value = self.utils.combobox_input("FormCollectionGrid", "InvoiceIDComboBox")
+        if combobox_value == "":
+            button_click = "cancel-button"
+        self.utils.user_control_buttons(button_click)
+        #end----------------
+
+        self.utils.close_settings_form("Export Invoices - Customs Information")
 
     def settings_page(self):
         # Menu
         self.utils.switch_to_menu_frame()
         self.click("//ul[@id = 'accordion2']//a[contains(text(), 'Settings')]", "xpath", 5)
 
-        # self.settings_contact_master("TESTNAME")
+        self.settings_contact_master("TESTNAME")
         self.export_invoices_customs_information("TEST")
 
 

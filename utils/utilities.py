@@ -1,27 +1,33 @@
+from dotenv import load_dotenv
+import os
+
 class Utils:
     def __init__(self, util):
         self.util = util
 
     def switch_to_main_frame(self):
+        load_dotenv()
+        url = os.getenv("LSP_URL")
+        uuid = url.split("/")[-1]
         self.util.switch_to_default_content()
-        self.util.switch_to_frame("LSP_31_59b159d4-4a16-422e-bedf-d57a5b0f139c")
+        self.util.switch_to_frame(f"LSP_31_{uuid}")
         self.util.wait(2)
 
     def switch_to_menu_frame(self):
         self.util.switch_to_default_content()
-        self.util.switch_to_frame("LSP_31_59b159d4-4a16-422e-bedf-d57a5b0f139c")
+        self.switch_to_main_frame()
         iframe_name = "mg_frame" + self.util.get_attribute("//div[@data-mgcompname = 'AccordionUserControl']", "id")
         self.util.switch_to_frame(iframe_name)
 
     def switch_to_cards_frame(self):
         self.util.switch_to_default_content()
-        self.util.switch_to_frame("LSP_31_59b159d4-4a16-422e-bedf-d57a5b0f139c")
+        self.switch_to_main_frame()
         iframe_name = "mg_frame" + self.util.get_attribute("//div[@data-mgcompname = 'SubscriptionListUserControl']", "id")
         self.util.switch_to_frame(iframe_name)
 
     def switch_to_user_control_button_frame(self):
         self.util.switch_to_default_content()
-        self.util.switch_to_frame("LSP_31_59b159d4-4a16-422e-bedf-d57a5b0f139c")
+        self.switch_to_main_frame()
         iframe_name = "mg_frame" + self.util.get_attribute("//div[@data-mgcompname = 'maintenanceToolbarUserControl']", "id")
         self.util.switch_to_frame(iframe_name)
 
@@ -52,7 +58,7 @@ class Utils:
         self.util.send_keys(f"//div[@data-mgcompname = '{mg_compname}']//input", input_text)
         self.util.wait(0.5)
 
-    def combobox_input(self, table_mg_compname, combobox_mg_compname):
+    def combobox_input(self, table_mg_compname, combobox_mg_compname, is_customizable=False, input_text=""):
         self.util.click(f"//div[@data-mgcompname = '{combobox_mg_compname}']//div[@aria-label = 'Open']")
         self.util.wait(1)
         table_element_id = self.util.get_attribute(f"//div[@data-mgcompname = '{table_mg_compname}']", "id")
@@ -60,19 +66,30 @@ class Utils:
         combobox_values = self.util.find_elements(f"//div[@data-mgcompname = '{combobox_mg_compname}']//ul//td")
         select_value = ""
         table_texts = [table_element_value.text for table_element_value in table_element_values]
+        return_value = ""
 
         for combobox_value in combobox_values:
             if combobox_value.text not in table_texts:
                 select_value = combobox_value.text
                 break
-        self.util.click(f"//div[@data-mgcompname = '{combobox_mg_compname}']//ul//td[contains(text(), '{select_value}')]")
-        #TODO: Add a condition if combobox is nullable, if yes, add custom text if no value is available in the combobox, if no, skip add, edit, and delete.
+        if select_value == "":
+            if is_customizable:
+                self.util.send_keys(f"//div[@data-mgcompname = '{combobox_mg_compname}']//input", input_text)
+                return_value = input_text
+            else:
+                return_value = ""
+        else:
+            self.util.click(f"//div[@data-mgcompname = '{combobox_mg_compname}']//ul//td[contains(text(), '{select_value}')]")
+            return_value = select_value
+
+        return return_value
 
     def clear_input(self, mg_compname):
         self.util.clear(f"//div[@data-mgcompname = '{mg_compname}']//input")
         self.util.wait(0.5)
 
     def close_settings_form(self, form_header_text):
+        self.switch_to_main_frame()
         self.util.click(f"//div[@aria-label = '{form_header_text}']//div[@aria-label = 'Close Window']")
 
     def table(self, text_to_search):
