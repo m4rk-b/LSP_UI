@@ -40,6 +40,8 @@ class Utils:
                 self.util.wait(5)
 
     def message_box(self, button_name):
+        self.util.switch_to_default_content()
+        self.switch_to_main_frame()
         is_message_box_element = self.util.is_element_present("//div[@data-mgcompname = 'MG.MessageBox' and @aria-hidden = 'false']")
         if is_message_box_element:
             self.util.click(f"//div[@data-mgcompname = 'MG.MessageBox' and @aria-hidden = 'false']//a[@data-mgcompnamevalue = '{button_name}']")

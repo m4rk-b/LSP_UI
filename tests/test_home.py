@@ -38,6 +38,7 @@ class HomeTest(BaseCase):
         self.utils.input_text("NameChildFormEdit", test_text)
         self.utils.click_button("SaveButton")
         self.utils.message_box("OK")
+
         #MODIFY
         self.utils.table(test_text)
         self.utils.click_button("ModifyButton")
@@ -45,6 +46,7 @@ class HomeTest(BaseCase):
         self.utils.input_text("NameChildFormEdit", f"MOD{test_text}")
         self.utils.click_button("SaveButton")
         self.utils.message_box("OK")
+
         #DELETE
         self.utils.click_button("DeleteButton")
         self.utils.table(f"MOD{test_text}")
@@ -60,34 +62,91 @@ class HomeTest(BaseCase):
     def dte_default_code(self):
         print("No script added yet")
 
-    def export_invoices_customs_information(self, test_text):
+    def export_invoices_customs_information(self, test_text=""):
         self.utils.switch_to_cards_frame()
 
         self.click("//div//h4[contains(text(), 'Export Invoices - Customs Information')]")
 
         self.utils.switch_to_main_frame()
         self.utils.wait_for_loading_invisible()
+
+        #ADD
         self.utils.user_control_buttons("add-button")
         self.utils.switch_to_main_frame()
-
-        #For combobox inputs
+        #For combobox input
         button_click = "save-button"
         combobox_value = self.utils.combobox_input("FormCollectionGrid", "InvoiceIDComboBox")
         if combobox_value == "":
             button_click = "cancel-button"
         self.utils.user_control_buttons(button_click)
+        self.utils.message_box("OK")
         #end----------------
 
+        #MODIFY
+        self.utils.switch_to_main_frame()
+        if combobox_value != "":
+            self.utils.table(combobox_value)
+            self.utils.user_control_buttons("modify-button")
+            self.utils.switch_to_main_frame()
+            shipping_port_code = self.utils.combobox_input("FormCollectionGrid", "ShippingPortCodeComboBox")
+            self.utils.user_control_buttons("save-button")
+            self.utils.message_box("OK")
+
+        #DELETE
+        self.utils.switch_to_main_frame()
+        if combobox_value != "":
+            self.utils.table(combobox_value)
+            self.utils.user_control_buttons("delete-button")
+            self.utils.switch_to_main_frame()
+            self.utils.message_box("OK")
+            self.utils.user_control_buttons("save-button")
+            self.utils.switch_to_main_frame()
+            self.utils.message_box("OK")
+
         self.utils.close_settings_form("Export Invoices - Customs Information")
+
+    def industry_maintenance(self, test_text):
+        self.utils.switch_to_cards_frame()
+
+        self.click("//div//h4[contains(text(), 'Industry Maintenance')]")
+
+        self.utils.switch_to_main_frame()
+        self.utils.wait_for_loading_invisible()
+
+        #ADD
+        self.utils.click_button("AddButton")
+        self.utils.input_text("IdentifierEdit", test_text)
+        type_edit = self.utils.combobox_input("CarrierDriverInformationGrid", "TypeEdit")
+        self.utils.input_text("IndustryEdit", test_text)
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+        #MODIFY
+        self.utils.table(test_text)
+        self.utils.click_button("ModifyButton")
+        self.utils.clear_input("IdentifierEdit")
+        self.utils.input_text("IdentifierEdit", f"MOD{test_text}")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+        #DELETE
+        self.utils.table(f"MOD{test_text}")
+        self.utils.click_button("DeleteButton")
+        self.utils.message_box("OK")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+        self.utils.close_settings_form("Industry Maintenance")
+
 
     def settings_page(self):
         # Menu
         self.utils.switch_to_menu_frame()
         self.click("//ul[@id = 'accordion2']//a[contains(text(), 'Settings')]", "xpath", 5)
 
-        self.settings_contact_master("TESTNAME")
-        self.export_invoices_customs_information("TEST")
-
+        # self.settings_contact_master("TESTNAME")
+        # self.export_invoices_customs_information()
+        self.industry_maintenance("TESTINDUSTRY")
 
     def test_home_page(self):
         self.initialize_test()
