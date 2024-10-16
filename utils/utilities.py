@@ -48,7 +48,8 @@ class Utils:
             self.util.wait(0.5)
 
     def click_button(self, mg_compname):
-        self.util.click(f"//div[@data-mgcompname = '{mg_compname}']//button")
+        button_index = self.util.find_elements(f"//div[@data-mgcompname = '{mg_compname}']//button")
+        self.util.click(f"//div[@data-mgcompname = '{mg_compname}' and {len(button_index)}]//button")
         self.util.wait(1)
 
     def user_control_buttons(self, button_id):
@@ -59,6 +60,16 @@ class Utils:
     def input_text(self, mg_compname, input_text):
         self.util.send_keys(f"//div[@data-mgcompname = '{mg_compname}']//input", input_text)
         self.util.wait(0.5)
+
+    def input_textarea(self, mg_compname, input_text):
+        self.util.send_keys(f"//div[@data-mgcompname = '{mg_compname}']//textarea[@aria-readonly = 'false']", input_text)
+
+    def translation_maintenance_combobox(self, output_type, translations):
+        self.util.click("//div[@data-mgcompname = 'OutputTypeComboBox']//div[@aria-label = 'Open']")
+        self.util.click(f"//div[@data-mgcompname = 'OutputTypeComboBox']//td[contains(text(), '{output_type}')]")
+        translations_combobox_index = self.util.find_elements("//div[@data-mgcompname = 'TranslationsComboBox']//div[@aria-label = 'Open']")
+        self.util.click(f"//div[@data-mgcompname = 'TranslationsComboBox' and {len(translations_combobox_index)}]//div[@aria-label = 'Open']")
+        self.util.click(f"//div[@data-mgcompname = 'TranslationsComboBox']//td[contains(text(), '{translations}')]")
 
     def combobox_input(self, table_mg_compname, combobox_mg_compname, is_customizable=False, input_text=""):
         self.util.click(f"//div[@data-mgcompname = '{combobox_mg_compname}']//div[@aria-label = 'Open']")
@@ -90,9 +101,20 @@ class Utils:
         self.util.clear(f"//div[@data-mgcompname = '{mg_compname}']//input")
         self.util.wait(0.5)
 
-    def close_settings_form(self, form_header_text):
+    def close_settings_form(self, form_header_text="", mg_compname=""):
+        #Todo: Add condition to use aria-label or data-mgcompname, if no aria-label use mg_compname
         self.switch_to_main_frame()
-        self.util.click(f"//div[@aria-label = '{form_header_text}']//div[@aria-label = 'Close Window']")
+        if form_header_text == "" and mg_compname == "":
+            self.util.fail("Should have at least 1 selector.")
+        else:
+            if form_header_text != "":
+                close_window_index = self.util.find_elements(f"//div[@aria-label = '{form_header_text}']//div[@aria-label = 'Close Window']")
+                xpath = f"//div[@aria-label = '{form_header_text}' and {len(close_window_index)}]//div[@aria-label = 'Close Window']"
+            elif mg_compname != "":
+                close_window_index = self.util.find_elements(f"//div[@data-mgcompname = '{mg_compname}']//div[@aria-label = 'Close Window']")
+                xpath = f"//div[@data-mgcompname = '{mg_compname}' and {len(close_window_index)}]//div[@aria-label = 'Close Window']"
+
+            self.util.click(xpath)
 
     def table(self, text_to_search):
         is_text_exist = self.util.is_element_present(f"//div[@data-mgcompname = 'MainGrid']//td/div[contains(text(), '{text_to_search}')]")

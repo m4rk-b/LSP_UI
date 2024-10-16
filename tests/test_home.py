@@ -13,20 +13,30 @@ class HomeTest(BaseCase):
     def initialize_test(self):
         load_dotenv()
         url = os.getenv("LSP_URL")
-        username = os.getenv("LSP_USERNAME")
-        password = os.getenv("LSP_PASSWORD")
+        # username = os.getenv("LSP_USERNAME")
+        # password = os.getenv("LSP_PASSWORD")
 
         self.maximize_window()
         self.open(url)
+        # self.send_keys("//input[@id='username']", username)
+        # self.send_keys("//input[@id='pass']", password)
+        # self.click("//button[@title = 'Sign in']")
+
+    def test_1_login(self):
+        # load_dotenv()
+        self.initialize_test()
+        username = os.getenv("LSP_USERNAME")
+        password = os.getenv("LSP_PASSWORD")
         self.send_keys("//input[@id='username']", username)
         self.send_keys("//input[@id='pass']", password)
         self.click("//button[@title = 'Sign in']")
 
-    def select_ae_to_test(self, accounting_entity):
+    def select_ae_to_test(self):
+        ae = os.getenv("ACCOUNTING_ENTITY")
         self.click("//div[@data-mgcompname = 'AEDroplist']//div[@aria-label = 'Open']")
-        self.click(f"//div[@data-mgcompname = 'AEDroplist']//ul/table//td[contains(text(), '{accounting_entity}')]", "xpath")
+        self.click(f"//div[@data-mgcompname = 'AEDroplist']//ul/table//td[contains(text(), '{ae}')]")
 
-    def settings_contact_master(self, test_text):
+    def contact_master(self, test_text):
         self.utils.switch_to_cards_frame()
 
         self.click("//div//h4[contains(text(), 'Contact Master')]")
@@ -138,17 +148,49 @@ class HomeTest(BaseCase):
 
         self.utils.close_settings_form("Industry Maintenance")
 
+    def invoice_translation_maintenance(self, test_text):
+        self.utils.switch_to_cards_frame()
 
-    def settings_page(self):
-        # Menu
-        self.utils.switch_to_menu_frame()
-        self.click("//ul[@id = 'accordion2']//a[contains(text(), 'Settings')]", "xpath", 5)
+        self.click("//div//h4[contains(text(), 'Invoice Translation Maintenance')]")
 
-        # self.settings_contact_master("TESTNAME")
-        # self.export_invoices_customs_information()
-        self.industry_maintenance("TESTINDUSTRY")
+        self.utils.switch_to_main_frame()
+        self.utils.wait_for_loading_invisible()
 
-    def test_home_page(self):
+        self.utils.translation_maintenance_combobox("Documentos Tributarios Electronicos (DTE)", "Tax Code")
+
+        #ADD
+        self.utils.click_button("AddButton")
+        self.utils.input_text("ERPCodeEdit", test_text)
+        standard_code = self.utils.combobox_input("StandardCodeGrid", "StandardCodeComboBox")
+        self.utils.message_box("YES")
+        standard_code = self.utils.combobox_input("StandardCodeGrid", "StandardCodeComboBox")
+
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+        #MODIFY
+        self.utils.table(test_text)
+        self.utils.click_button("ModifyButton")
+        self.utils.input_textarea("SubscriberCodeDescriptionEdit", f"MOD{test_text}")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+        #DELETE
+        self.utils.table(test_text)
+        self.utils.click_button("DeleteButton")
+        self.utils.message_box("OK")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+        self.utils.close_settings_form("", "LCSTranslationMaintenanceGroup")
+
+    def supplementary_data_setup(self):
+        print("No scenarios yet")
+
+    def supplementary_data_old(self):
+        print("No scenarios yet")
+
+    def test_settings_page(self):
         self.initialize_test()
 
         self.utils = Utils(self)
@@ -156,7 +198,25 @@ class HomeTest(BaseCase):
         self.utils.switch_to_main_frame()
         self.utils.wait_for_loading_invisible()
 
-        self.select_ae_to_test("CL_M3")
+        self.select_ae_to_test()
+        # Menu
+        self.utils.switch_to_menu_frame()
+        self.click("//ul[@id = 'accordion2']//a[contains(text(), 'Settings')]", "xpath", 5)
+
+        self.contact_master("TESTNAME")
+        self.export_invoices_customs_information()
+        self.industry_maintenance("TESTINDUSTRY")
+        self.invoice_translation_maintenance("TESTSUBCODE")
+
+    def home_page(self):
+        self.initialize_test()
+
+        self.utils = Utils(self)
+
+        self.utils.switch_to_main_frame()
+        self.utils.wait_for_loading_invisible()
+
+        self.select_ae_to_test()
 
         self.settings_page()
 
