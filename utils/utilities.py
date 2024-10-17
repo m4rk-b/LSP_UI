@@ -57,8 +57,9 @@ class Utils:
         self.util.click(f"//div[@class = 'buttonset']//button[@id='{button_id}']")
         self.util.wait(1)
 
-    def input_text(self, mg_compname, input_text):
-        self.util.send_keys(f"//div[@data-mgcompname = '{mg_compname}']//input", input_text)
+    def input_text(self, mg_compname, input_text, selector="data-mgcompnamevalue"):
+        input_index = self.util.find_elements(f"//input[@{selector} = '{mg_compname}']", input_text)
+        self.util.send_keys(f"//input[@{selector} = '{mg_compname}' and {len(input_index)}]", input_text)
         self.util.wait(0.5)
 
     def input_textarea(self, mg_compname, input_text):

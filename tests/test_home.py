@@ -36,6 +36,12 @@ class HomeTest(BaseCase):
         self.click("//div[@data-mgcompname = 'AEDroplist']//div[@aria-label = 'Open']")
         self.click(f"//div[@data-mgcompname = 'AEDroplist']//ul/table//td[contains(text(), '{ae}')]")
 
+    def upload_file(self, file_to_upload):
+        path = os.path.normpath(os.path.join(os.path.dirname(__file__), f"../files/{file_to_upload}"))
+        self.utils.click_button("XSLTUploadButton")
+        self.utils.input_text("uploadedfileinput", path, "name")
+        self.click("//a[@aria-disabled = 'false']//span[contains(text(), 'Upload')]")
+
     def contact_master(self, test_text):
         self.utils.switch_to_cards_frame()
 
@@ -184,8 +190,23 @@ class HomeTest(BaseCase):
 
         self.utils.close_settings_form("", "LCSTranslationMaintenanceGroup")
 
-    def supplementary_data_setup(self):
-        print("No scenarios yet")
+    def supplementary_data_setup(self, test_text):
+        self.utils.switch_to_cards_frame()
+
+        self.click("//div//h4[contains(text(), 'Supplementary Data Setup')]")
+
+        self.utils.switch_to_main_frame()
+        self.utils.wait_for_loading_invisible()
+
+        #ADD
+        self.utils.click_button("AddButton")
+        self.utils.input_text("NameEdit", test_text)
+        version = "1.0"
+        self.utils.input_text("VersionEdit", version)
+        self.upload_file("TEST.xsl")
+        self.utils.click_button("SaveButton")
+
+
 
     def supplementary_data_old(self):
         print("No scenarios yet")
@@ -203,10 +224,11 @@ class HomeTest(BaseCase):
         self.utils.switch_to_menu_frame()
         self.click("//ul[@id = 'accordion2']//a[contains(text(), 'Settings')]", "xpath", 5)
 
-        self.contact_master("TESTNAME")
-        self.export_invoices_customs_information()
-        self.industry_maintenance("TESTINDUSTRY")
-        self.invoice_translation_maintenance("TESTSUBCODE")
+        # self.contact_master("TESTNAME")
+        # self.export_invoices_customs_information()
+        # self.industry_maintenance("TESTINDUSTRY")
+        # self.invoice_translation_maintenance("TESTSUBCODE")
+        self.supplementary_data_setup("TESTSD")
 
     def home_page(self):
         self.initialize_test()
