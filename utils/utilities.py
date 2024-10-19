@@ -31,6 +31,14 @@ class Utils:
         iframe_name = "mg_frame" + self.util.get_attribute("//div[@data-mgcompname = 'maintenanceToolbarUserControl']", "id")
         self.util.switch_to_frame(iframe_name)
 
+    def wait_for_home_to_load(self):
+        self.switch_to_main_frame()
+        self.switch_to_menu_frame()
+        is_sidebar_loaded = False
+        while not is_sidebar_loaded:
+            is_sidebar_loaded = self.util.is_element_visible("//div[@class = 'profile-sidebar']")
+            self.util.wait(0.2)
+
     def wait_for_loading_invisible(self):
         is_loading = True
         while is_loading:
@@ -59,7 +67,11 @@ class Utils:
 
     def input_text(self, mg_compname, input_text, selector="data-mgcompnamevalue"):
         input_index = self.util.find_elements(f"//input[@{selector} = '{mg_compname}']", input_text)
-        self.util.send_keys(f"//input[@{selector} = '{mg_compname}' and {len(input_index)}]", input_text)
+        if self.util.get_attribute(f"//input[@{selector} = '{mg_compname}' and {len(input_index)}]", "role") == "checkbox":
+            input_id = self.util.get_attribute(f"//input[@{selector} = '{mg_compname}' and {len(input_index)}]", "componentid")
+            self.util.click(f"//span[@id = '{input_id}-displayEl']")
+        else:
+            self.util.send_keys(f"//input[@{selector} = '{mg_compname}' and {len(input_index)}]", input_text)
         self.util.wait(0.5)
 
     def input_textarea(self, mg_compname, input_text):
@@ -103,7 +115,6 @@ class Utils:
         self.util.wait(0.5)
 
     def close_settings_form(self, form_header_text="", mg_compname=""):
-        #Todo: Add condition to use aria-label or data-mgcompname, if no aria-label use mg_compname
         self.switch_to_main_frame()
         if form_header_text == "" and mg_compname == "":
             self.util.fail("Should have at least 1 selector.")

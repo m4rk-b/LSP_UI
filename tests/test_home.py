@@ -204,9 +204,37 @@ class HomeTest(BaseCase):
         version = "1.0"
         self.utils.input_text("VersionEdit", version)
         self.upload_file("TEST.xsl")
+        user_defined = "TestUDF"
+        self.utils.click_button("AddUserDefinedButton")
+        self.utils.input_text("UserDefinedFieldEdit", user_defined)
+        self.utils.input_text("RequiredCheckBox", "")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+        #MODIFY
+        self.utils.table(test_text)
+        self.utils.click_button("ModifyButton")
+        self.utils.clear_input("NameEdit")
+        self.utils.input_text("NameEdit", f"MOD{test_text}")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+        self.utils.table(f"MOD{test_text}")
+        self.utils.click_button("AddUserDefinedButton")
+        self.utils.clear_input("UserDefinedFieldEdit")
+        self.utils.input_text("UserDefinedFieldEdit", f"MOD{user_defined}")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+        #DELETE
+        self.utils.table(f"MOD{test_text}")
+        self.utils.click_button("UserDefinedButton")
+        self.utils.message_box("OK")
         self.utils.click_button("SaveButton")
 
-
+        self.utils.table(f"MOD{test_text}")
+        self.utils.click_button("DeleteButton")
+        self.utils.message_box("OK")
+        self.utils.click_button("SaveButton")
 
     def supplementary_data_old(self):
         print("No scenarios yet")

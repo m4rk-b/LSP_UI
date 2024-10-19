@@ -1,0 +1,52 @@
+test_home.py::HomeTest::test_settings_page
+--------------------------------------------------------------------
+Last Page: https://mingle-cqa-portal.cqa.inforcloudsuite.com/v2/LCLQA_AX1/59b159d4-4a16-422e-bedf-d57a5b0f139c
+ Duration: 53.48s
+  Browser: Chrome 129.0.6668.101
+   Driver: chromedriver 129.0.6668.100
+Timestamp: 1729337412  (Unix Timestamp)
+     Date: Saturday, 19 October 2024
+     Time: 7:30:12 PM  (Malay Peninsula Standard Time, UTC+08:00)
+--------------------------------------------------------------------
+Traceback:
+  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\tests\test_home.py", line 264, in test_settings_page
+    self.supplementary_data_setup("TESTSD")
+  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\tests\test_home.py", line 217, in supplementary_data_setup
+    self.utils.clear_input("NameEdit")
+  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\utils\utilities.py", line 114, in clear_input
+    self.util.clear(f"//div[@data-mgcompname = '{mg_compname}']//input")
+  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\.venv\Lib\site-packages\seleniumbase\fixtures\base_case.py", line 1198, in clear
+    element.clear()
+  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 117, in clear
+    self._execute(Command.CLEAR_ELEMENT)
+  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 395, in _execute
+    return self._parent.execute(command, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 354, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+Exception: Message: invalid element state
+  (Session info: chrome=129.0.6668.101)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6A19BB095+29557]
+	(No symbol) [0x00007FF6A192FA50]
+	(No symbol) [0x00007FF6A17EB399]
+	(No symbol) [0x00007FF6A1835105]
+	(No symbol) [0x00007FF6A186718A]
+	(No symbol) [0x00007FF6A1832E86]
+	(No symbol) [0x00007FF6A18673A0]
+	(No symbol) [0x00007FF6A188851C]
+	(No symbol) [0x00007FF6A1866F33]
+	(No symbol) [0x00007FF6A183116F]
+	(No symbol) [0x00007FF6A18322D1]
+	GetHandleVerifier [0x00007FF6A1CEC96D+3378253]
+	GetHandleVerifier [0x00007FF6A1D38497+3688311]
+	GetHandleVerifier [0x00007FF6A1D2D1CB+3642539]
+	GetHandleVerifier [0x00007FF6A1A7A6B6+813462]
+	(No symbol) [0x00007FF6A193AB5F]
+	(No symbol) [0x00007FF6A1936B74]
+	(No symbol) [0x00007FF6A1936D10]
+	(No symbol) [0x00007FF6A1925C1F]
+	BaseThreadInitThunk [0x00007FFE15C9257D+29]
+	RtlUserThreadStart [0x00007FFE1772AF08+40]
