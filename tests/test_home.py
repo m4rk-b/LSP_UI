@@ -1,3 +1,5 @@
+from unittest import skip
+
 from dotenv import load_dotenv
 import os
 from seleniumbase import BaseCase
@@ -31,18 +33,17 @@ class HomeTest(BaseCase):
         self.send_keys("//input[@id='pass']", password)
         self.click("//button[@title = 'Sign in']")
 
+        # self.utils.wait_for_home_to_load()
+
     def select_ae_to_test(self):
         ae = os.getenv("ACCOUNTING_ENTITY")
         self.click("//div[@data-mgcompname = 'AEDroplist']//div[@aria-label = 'Open']")
         self.click(f"//div[@data-mgcompname = 'AEDroplist']//ul/table//td[contains(text(), '{ae}')]")
 
-    def upload_file(self, file_to_upload):
-        path = os.path.normpath(os.path.join(os.path.dirname(__file__), f"../files/{file_to_upload}"))
-        self.utils.click_button("XSLTUploadButton")
-        self.utils.input_text("uploadedfileinput", path, "name")
-        self.click("//a[@aria-disabled = 'false']//span[contains(text(), 'Upload')]")
+    #@skip
+    def test_contact_master(self, test_text="TESTNAME"):
+        self.settings_page()
 
-    def contact_master(self, test_text):
         self.utils.switch_to_cards_frame()
 
         self.click("//div//h4[contains(text(), 'Contact Master')]")
@@ -78,7 +79,8 @@ class HomeTest(BaseCase):
     def dte_default_code(self):
         print("No script added yet")
 
-    def export_invoices_customs_information(self, test_text=""):
+    def test_export_invoices_customs_information(self, test_text=""):
+        self.settings_page()
         self.utils.switch_to_cards_frame()
 
         self.click("//div//h4[contains(text(), 'Export Invoices - Customs Information')]")
@@ -121,7 +123,8 @@ class HomeTest(BaseCase):
 
         self.utils.close_settings_form("Export Invoices - Customs Information")
 
-    def industry_maintenance(self, test_text):
+    def test_industry_maintenance(self, test_text="TESTIND"):
+        self.settings_page()
         self.utils.switch_to_cards_frame()
 
         self.click("//div//h4[contains(text(), 'Industry Maintenance')]")
@@ -154,7 +157,8 @@ class HomeTest(BaseCase):
 
         self.utils.close_settings_form("Industry Maintenance")
 
-    def invoice_translation_maintenance(self, test_text):
+    def test_invoice_translation_maintenance(self, test_text="TESTTAX"):
+        self.settings_page()
         self.utils.switch_to_cards_frame()
 
         self.click("//div//h4[contains(text(), 'Invoice Translation Maintenance')]")
@@ -190,7 +194,8 @@ class HomeTest(BaseCase):
 
         self.utils.close_settings_form("", "LCSTranslationMaintenanceGroup")
 
-    def supplementary_data_setup(self, test_text):
+    def test_supplementary_data_setup(self, test_text="TESTSD"):
+        self.settings_page()
         self.utils.switch_to_cards_frame()
 
         self.click("//div//h4[contains(text(), 'Supplementary Data Setup')]")
@@ -203,35 +208,48 @@ class HomeTest(BaseCase):
         self.utils.input_text("NameEdit", test_text)
         version = "1.0"
         self.utils.input_text("VersionEdit", version)
-        self.upload_file("TEST.xsl")
-        user_defined = "TestUDF"
-        self.utils.click_button("AddUserDefinedButton")
-        self.utils.input_text("UserDefinedFieldEdit", user_defined)
-        self.utils.input_text("RequiredCheckBox", "")
+        self.utils.upload_file("TEST.xsl")
         self.utils.click_button("SaveButton")
         self.utils.message_box("OK")
 
+        #ADD User Defined Fields
+        self.utils.table(test_text, "AddendaGrid")
+        user_defined = "TestUDF"
+        self.utils.click_button("AddUserDefinedButton")
+        self.utils.input_text("UserDefinedFieldEdit", user_defined)
+        self.utils.click_button("SaveButton")
+
+        #MODIFY User Defined Fields
+        self.utils.table(test_text, "AddendaGrid")
+        self.utils.table(user_defined, "UserDefinedGrid")
+        self.utils.click_button("ModifyUserDefinedButton")
+        self.utils.clear_input("UserDefinedFieldEdit")
+        self.utils.input_text("UserDefinedFieldEdit", f"MOD{user_defined}")
+        self.utils.message_box("YES")
+        self.utils.click_button("SaveButton")
+
+        #DELETE User Defined Fields
+        self.utils.table(test_text, "AddendaGrid")
+        self.utils.table(f"MOD{user_defined}", "UserDefinedGrid")
+        self.utils.click_button("UserDefinedButton")
+        self.utils.message_box("OK")
+        self.utils.click_button("SaveButton")
+
         #MODIFY
-        self.utils.table(test_text)
+        self.utils.table(test_text, "AddendaGrid")
         self.utils.click_button("ModifyButton")
         self.utils.clear_input("NameEdit")
         self.utils.input_text("NameEdit", f"MOD{test_text}")
         self.utils.click_button("SaveButton")
         self.utils.message_box("OK")
-        self.utils.table(f"MOD{test_text}")
-        self.utils.click_button("AddUserDefinedButton")
-        self.utils.clear_input("UserDefinedFieldEdit")
-        self.utils.input_text("UserDefinedFieldEdit", f"MOD{user_defined}")
-        self.utils.click_button("SaveButton")
-        self.utils.message_box("OK")
 
         #DELETE
-        self.utils.table(f"MOD{test_text}")
+        self.utils.table(f"MOD{test_text}", "AddendaGrid")
         self.utils.click_button("UserDefinedButton")
         self.utils.message_box("OK")
         self.utils.click_button("SaveButton")
 
-        self.utils.table(f"MOD{test_text}")
+        self.utils.table(f"MOD{test_text}", "AddendaGrid")
         self.utils.click_button("DeleteButton")
         self.utils.message_box("OK")
         self.utils.click_button("SaveButton")
@@ -239,13 +257,14 @@ class HomeTest(BaseCase):
     def supplementary_data_old(self):
         print("No scenarios yet")
 
-    def test_settings_page(self):
+    def settings_page(self):
         self.initialize_test()
 
         self.utils = Utils(self)
 
         self.utils.switch_to_main_frame()
         self.utils.wait_for_loading_invisible()
+        self.utils.wait_for_home_to_load()
 
         self.select_ae_to_test()
         # Menu
@@ -256,7 +275,7 @@ class HomeTest(BaseCase):
         # self.export_invoices_customs_information()
         # self.industry_maintenance("TESTINDUSTRY")
         # self.invoice_translation_maintenance("TESTSUBCODE")
-        self.supplementary_data_setup("TESTSD")
+        # self.supplementary_data_setup("TESTSD")
 
     def home_page(self):
         self.initialize_test()
