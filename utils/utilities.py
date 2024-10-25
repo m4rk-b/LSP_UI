@@ -64,7 +64,8 @@ class Utils:
 
     def click_button(self, mg_compname):
         button_index = self.util.find_elements(f"//div[@data-mgcompname = '{mg_compname}']//button")
-        self.util.wait_for_element_clickable(f"//div[@data-mgcompname = '{mg_compname}' and {len(button_index)}]//button")
+        self.util.wait_for_element_clickable(
+            f"//div[@data-mgcompname = '{mg_compname}' and {len(button_index)}]//button")
         self.util.click(f"//div[@data-mgcompname = '{mg_compname}' and {len(button_index)}]//button")
         self.util.wait(1)
 
@@ -157,3 +158,31 @@ class Utils:
         self.click_button("XSLTUploadButton")
         self.input_text("uploadedfileinput", path, "name")
         self.util.click("//a[@aria-disabled = 'false']//span[contains(text(), 'Upload')]")
+
+    def select_ae_to_test(self):
+        load_dotenv()
+        ae = os.getenv("ACCOUNTING_ENTITY")
+        self.util.click("//div[@data-mgcompname = 'AEDroplist']//div[@aria-label = 'Open']")
+        self.wait_for_loading_invisible()
+        is_ae_exist = self.util.is_element_present(
+            f"//div[@data-mgcompname = 'AEDroplist']//ul/table//td[contains(text(), '{ae}')]")
+        if is_ae_exist:
+            self.util.click("//div[@data-mgcompname = 'AEDroplist']//div[@aria-label = 'Open']")
+            self.util.click(f"//div[@data-mgcompname = 'AEDroplist']//ul/table//td[contains(text(), '{ae}')]")
+        else:
+            self.util.fail(f"You're not subscribe to {ae}.")
+
+    def select_menu(self, menu_name):
+        is_menu_exist = self.util.is_element_present(f"//ul[@id = 'accordion2']//a[contains(text(), '{menu_name}')]")
+        if is_menu_exist:
+            self.util.click(f"//ul[@id = 'accordion2']//a[contains(text(), '{menu_name}')]", "xpath", 5)
+        else:
+            self.util.fail(f"Cannot find {menu_name} in the accordion.")
+
+    def click_settings_card(self, settings_name):
+        self.switch_to_cards_frame()
+        is_settings_exist = self.util.is_element_present(f"//div//h4[contains(text(), '{settings_name}')]")
+        if is_settings_exist:
+            self.util.click(f"//div//h4[contains(text(), '{settings_name}')]")
+        else:
+            pass
