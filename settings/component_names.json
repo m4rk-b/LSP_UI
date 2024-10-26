@@ -1,0 +1,100 @@
+{
+  "settings": [
+    {
+      "contact_master": [
+        {
+          "name": {
+            "compname": "NameChildFormEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": true,
+            "editable": true,
+            "reference": null,
+            "default": "TESTCONTACT",
+            "size": 255
+          }
+        },
+        {
+          "name": {
+            "compname": "NameEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": true,
+            "editable": true,
+            "reference": null,
+            "default": "TESTCONTACT",
+            "size": 255
+          }
+        }
+      ]
+    },
+    {
+      "export_invoices_customs_information": [
+        {
+          "invoice_id": {
+            "compname": "InvoiceIDComboBox",
+            "selector": "data-mgcompnamevalue",
+            "role": "combobox",
+            "required": true,
+            "editable": false,
+            "reference": "FormCollectionGrid",
+            "default": null,
+            "size": 255
+          }
+        },
+        {
+          "shipping_port_code": {
+            "compname": "ShippingPortCodeComboBox",
+            "selector": "data-mgcompnamevalue",
+            "role": "combobox",
+            "required": false,
+            "editable": false,
+            "reference": null,
+            "default": null,
+            "size": 255
+          }
+        }
+      ]
+    },
+    {
+      "industry_maintenance": [
+        {
+          "identifier": {
+            "compname": "IdentifierEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": true,
+            "editable": true,
+            "reference": null,
+            "default": "TESTIDENTIFIER",
+            "size": 255
+          }
+        },
+        {
+          "type": {
+            "compname": "TypeEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "combobox",
+            "required": true,
+            "editable": false,
+            "reference": null,
+            "default": null,
+            "size": 255
+          }
+        },
+        {
+          "industry": {
+            "compname": "IndustryEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": true,
+            "editable": true,
+            "reference": null,
+            "default": "TESTINDUSTRY",
+            "size": 255
+          }
+        }
+      ]
+    }
+  ]
+}
