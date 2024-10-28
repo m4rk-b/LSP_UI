@@ -104,7 +104,7 @@ class Utils:
         self.util.wait(1)
 
     def input_text(self, settings_form, input_name_field, input_text=None):
-        # global grid_values_dict, select_value
+        self.util.wait(0.5)
         select_value = None
         input_elements = self.read_json_data(settings_form, input_name_field)
         for input_element in input_elements:
@@ -118,9 +118,12 @@ class Utils:
                 input_text = input_element['default']
             size = input_element['size']
             input_index = self.util.find_elements(f"//input[@{selector} = '{compname}']")
-            if input_index != 0:
+            textarea_index = self.util.find_elements(f"//textarea[@{selector} = '{compname}' and @aria-readonly = 'false']")
+            if len(input_index) != 0 or len(textarea_index) != 0:
                 input_xpath = f"//input[@{selector} = '{compname}' and {len(input_index)}]"
-                if self.util.is_element_visible(input_xpath):
+                textarea_xpath = f"//textarea[@{selector} = '{compname}' and @aria-readonly = 'false']"
+                is_present = self.util.is_element_present(input_xpath)
+                if (compname == "uploadedfileinput" and is_present) or self.util.is_element_visible(input_xpath) or self.util.is_element_visible(textarea_xpath):
                     if role == 'checkbox':
                         input_id = self.util.get_attribute(input_xpath, "componentid")
                         self.util.click(f"//span[@id = '{input_id}-displayEl']")
@@ -156,6 +159,10 @@ class Utils:
                             self.util.update_text(input_xpath, select_value + Keys.ENTER)
                         else:
                             self.util.send_keys(input_xpath, select_value)
+                    if role == 'textarea':
+                        select_value = input_text
+                        self.util.send_keys(textarea_xpath, select_value)
+
             self.util.wait(0.1)
         self.util.wait(1)
         return select_value
@@ -196,11 +203,12 @@ class Utils:
             self.util.click(f"//div[@data-mgcompname = '{mg_compname}']//td/div[contains(text(), '{text_to_search}')]")
             self.util.wait(0.2)
 
-    def upload_file(self, file_to_upload):
+    def upload_file(self, form_name, file_to_upload):
         self.switch_to_main_frame()
         path = os.path.normpath(os.path.join(os.path.dirname(__file__), f"../files/{file_to_upload}"))
         self.click_button("XSLTUploadButton")
-        self.input_text("uploadedfileinput", path, "name")
+        # self.input_text("uploadedfileinput", path, "name")
+        self.input_text(form_name, "select_file", path)
         self.util.click("//a[@aria-disabled = 'false']//span[contains(text(), 'Upload')]")
 
     def select_ae_to_test(self):

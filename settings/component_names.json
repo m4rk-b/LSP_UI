@@ -95,6 +95,138 @@
           }
         }
       ]
+    },
+    {
+      "invoice_translation_maintenance": [
+        {
+          "user_tax_code": {
+            "compname": "ERPCodeEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": true,
+            "editable": true,
+            "reference": null,
+            "default": "TESTTAXCODE",
+            "size": 255
+          }
+        },
+        {
+          "standard_tax_code": {
+            "compname": "StandardCodeComboBox",
+            "selector": "data-mgcompnamevalue",
+            "role": "combobox",
+            "required": true,
+            "editable": true,
+            "reference": null,
+            "default": null,
+            "size": 255
+          }
+        },
+        {
+          "standard_code_description": {
+            "compname": "SubscriberCodeDescriptionEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textarea",
+            "required": false,
+            "editable": true,
+            "reference": null,
+            "default": "Example tax code description.",
+            "size": 255
+          }
+        }
+      ]
+    },
+    {
+      "supplementary_data_setup": [
+        {
+          "supplementary_data_name": {
+            "compname": "NameEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": true,
+            "editable": true,
+            "reference": null,
+            "default": "TESTSDNAME",
+            "size": 255
+          }
+        },
+        {
+          "version": {
+            "compname": "VersionEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": true,
+            "editable": false,
+            "reference": null,
+            "default": "1.0",
+            "size": 255
+          }
+        },
+        {
+          "user_define_field": {
+            "compname": "UserDefinedFieldEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": true,
+            "editable": true,
+            "reference": null,
+            "default": "TESTSDFIELD",
+            "size": 255
+          }
+        },
+        {
+          "required_checkbox": {
+            "compname": "RequiredCheckBox",
+            "selector": "data-mgcompnamevalue",
+            "role": "checkbox",
+            "required": false,
+            "editable": false,
+            "reference": null,
+            "default": null,
+            "size": 255
+          }
+        },
+        {
+          "select_file": {
+            "compname": "uploadedfileinput",
+            "selector": "name",
+            "role": "textbox",
+            "required": true,
+            "editable": false,
+            "reference": null,
+            "default": null,
+            "size": 255
+          }
+        }
+      ]
+    },
+    {
+      "supplementary_data_old": [
+        {
+          "customer_id": {
+            "compname": "CustomerIDEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": true,
+            "editable": false,
+            "reference": null,
+            "default": "SDCUSTOMERID",
+            "size": 255
+          }
+        },
+        {
+          "supplementary_data_name_and_version": {
+            "compname": "AddendaNameVersionComboBox",
+            "selector": "data-mgcompnamevalue",
+            "role": "combobox",
+            "required": true,
+            "editable": false,
+            "reference": null,
+            "default": null,
+            "size": 255
+          }
+        }
+      ]
     }
   ]
 }
