@@ -227,6 +227,118 @@
           }
         }
       ]
+    },
+    {
+      "non_stock_maintenance": [
+        {
+          "item_id": {
+            "compname": "ItemIDEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": true,
+            "editable": false,
+            "reference": null,
+            "default": "NSMITEMID",
+            "size": 255
+          }
+        },
+        {
+          "item_description": {
+            "compname": "ItemDescriptionEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": false,
+            "editable": false,
+            "reference": null,
+            "default": "Non-stock maintenance description.",
+            "size": 255
+          }
+        }
+      ]
+    },
+    {
+      "ar_default_language_code": [
+        {
+          "language_code": {
+            "compname": "LanguageCodeComboBox",
+            "selector": "data-mgcompnamevalue",
+            "role": "combobox",
+            "required": false,
+            "editable": false,
+            "reference": null,
+            "default": null,
+            "size": 255
+          }
+        }
+      ]
+    },
+    {
+      "einvoice_type_translation": [
+        {
+          "user_einvoice_type": {
+            "compname": "UserInvoiceTypeEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": true,
+            "editable": true,
+            "reference": null,
+            "default": "INVOICETYPE",
+            "size": 255
+          }
+        },
+        {
+          "standard_einvoice_type": {
+            "compname": "StandardInvoiceTypeComboBox",
+            "selector": "data-mgcompnamevalue",
+            "role": "combobox",
+            "required": true,
+            "editable": false,
+            "reference": null,
+            "default": null,
+            "size": 255
+          }
+        },
+        {
+          "user_einvoice_type_description": {
+            "compname": "UserInvoiceTypeDescriptionEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textarea",
+            "required": true,
+            "editable": false,
+            "reference": null,
+            "default": "User eInvoice type description.",
+            "size": 255
+          }
+        }
+      ]
+    },
+    {
+      "customer_einvoice_maintenance": [
+        {
+          "party_id": {
+            "compname": "PartyIDEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": true,
+            "editable": true,
+            "reference": null,
+            "default": "PARTYID",
+            "size": 255
+          }
+        },
+        {
+          "einvoice_type": {
+            "compname": "EInvoiceTypeComboBox",
+            "selector": "data-mgcompnamevalue",
+            "role": "combobox",
+            "required": true,
+            "editable": false,
+            "reference": null,
+            "default": null,
+            "size": 255
+          }
+        }
+      ]
     }
   ]
 }

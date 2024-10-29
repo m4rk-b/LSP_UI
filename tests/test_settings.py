@@ -21,16 +21,11 @@ class HomeTest(BaseCase):
         self.click("//button[@title = 'Sign in']")
         self.utils.wait_for_home_to_load()
 
-    # @skip
+    @skip
     def test_contact_master(self, test_text="TESTNAME"):
         settings_card_title = self.settings_page("Contact Master")
         modified_text = f"MOD{test_text}"
 
-
-        # self.utils.click_settings_card(settings_card_title)
-        #
-        # self.utils.switch_to_main_frame()
-        # self.utils.wait_for_loading_invisible()
         #ADD
         self.utils.click_button("AddButton")
         self.utils.input_text(settings_card_title, "name", test_text)
@@ -63,14 +58,9 @@ class HomeTest(BaseCase):
     def dte_default_code(self):
         print("No script added yet")
 
-    # @skip
+    @skip
     def test_export_invoices_customs_information(self):
-
         settings_card_title = self.settings_page("Export Invoices - Customs Information")
-        # self.utils.click_settings_card(settings_card_title)
-        #
-        # self.utils.switch_to_main_frame()
-        # self.utils.wait_for_loading_invisible()
 
         #ADD
         self.utils.user_control_buttons("add-button")
@@ -107,14 +97,9 @@ class HomeTest(BaseCase):
 
         self.utils.close_settings_form("Export Invoices - Customs Information")
 
-    # @skip
+    @skip
     def test_industry_maintenance(self, test_text="TESTIND"):
-
         settings_card_title = self.settings_page("Industry Maintenance")
-        # self.utils.click_settings_card(settings_card_title)
-        #
-        # self.utils.switch_to_main_frame()
-        # self.utils.wait_for_loading_invisible()
 
         #ADD
         self.utils.click_button("AddButton")
@@ -140,14 +125,9 @@ class HomeTest(BaseCase):
 
         self.utils.close_settings_form("Industry Maintenance")
 
-    # @skip
+    @skip
     def test_invoice_translation_maintenance(self, test_text="TESTTAX"):
-
         settings_card_title = self.settings_page("Invoice Translation Maintenance")
-        # self.utils.click_settings_card(settings_card_title)
-        #
-        # self.utils.switch_to_main_frame()
-        # self.utils.wait_for_loading_invisible()
 
         self.utils.translation_maintenance_combobox("Documentos Tributarios Electronicos (DTE)", "Tax Code")
 
@@ -177,14 +157,9 @@ class HomeTest(BaseCase):
 
         self.utils.close_settings_form("", "LCSTranslationMaintenanceGroup")
 
-    # @skip
+    @skip
     def test_supplementary_data_setup(self, test_text="TESTSD"):
-
         settings_card_title = self.settings_page("Supplementary Data Setup")
-        # self.utils.click_settings_card(settings_card_title)
-        #
-        # self.utils.switch_to_main_frame()
-        # self.utils.wait_for_loading_invisible()
 
         #ADD
         self.utils.click_button("AddButton")
@@ -228,14 +203,9 @@ class HomeTest(BaseCase):
         self.utils.message_box("OK")
         self.utils.click_button("SaveButton")
 
-    # @skip
+    @skip
     def test_supplementary_data_old(self, test_text="TESTSU"):
-
         settings_card_title = self.settings_page("Supplementary Data")
-        # self.utils.click_settings_card(settings_card_title)
-        #
-        # self.utils.switch_to_main_frame()
-        # self.utils.wait_for_loading_invisible()
 
         #ADD
         self.utils.click_button("AddButton")
@@ -251,20 +221,103 @@ class HomeTest(BaseCase):
         self.utils.message_box("OK")
         self.utils.click_button("SaveButton")
 
-    def settings_page(self, settings_from):
+    @skip
+    def test_non_stock_maintenance(self):
+        settings_card_title = self.settings_page("Non-Stock Maintenance")
+
+        #ADD
+        self.utils.click_button("AddButton")
+        item_id = self.utils.input_text(settings_card_title, "item_id")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+        #MODIFY
+        self.utils.table(item_id)
+        self.utils.click_button("ModifyButton")
+        item_description = self.utils.input_text(settings_card_title, "item_description")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+        #DELETE
+        self.utils.table(item_description)
+        self.utils.click_button("DeleteButton")
+        self.utils.message_box("OK")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+    @skip
+    def test_ar_default_language_code(self):
+        settings_card_name = self.settings_page("AR Default Language Code")
+
+        #MODIFY
+        self.utils.click_button("ModifyButton")
+        self.utils.input_text(settings_card_name, "language_code")
+        self.utils.click_button("SaveButton")
+
+    @skip
+    def test_einvoice_type_translation(self):
+        settings_card_name = self.settings_page("eInvoice Type Translation")
+
+        #ADD
+        self.utils.click_button("AddButton")
+        user_einvoice_type = self.utils.input_text(settings_card_name, "user_einvoice_type")
+        standard_einvoice_type = self.utils.input_text(settings_card_name, "standard_einvoice_type")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+        #MODIFY
+        self.utils.table(user_einvoice_type, "InvoiceTypeGrid")
+        self.utils.message_box("OK")
+        self.utils.click_button("ModifyButton")
+        user_einvoice_type_description = self.utils.input_text(settings_card_name, "user_einvoice_type_description", f"MOD{user_einvoice_type}")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+        #DELETE
+        self.utils.table(user_einvoice_type_description, "InvoiceTypeGrid")
+        self.utils.click_button("DeleteButton")
+        self.utils.message_box("OK")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+    def test_customer_einvoice_maintenance(self):
+        settings_card_name = self.settings_page("Customer eInvoice Maintenance")
+
+        #ADD
+        self.utils.click_button("AddButton")
+        party_id = self.utils.input_text(settings_card_name, "party_id")
+        self.utils.input_text(settings_card_name, "einvoice_type")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+        #MODIFY
+        self.utils.table(party_id, "PartyOutputTypeGrid")
+        self.utils.click_button("ModifyButton")
+        self.utils.input_text(settings_card_name, "einvoice_type")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+        #DELETE
+        self.utils.table(party_id, "PartyOutputTypeGrid")
+        self.utils.click_button("DeleteButton")
+        self.utils.message_box("OK")
+        self.utils.click_button("SaveButton")
+        self.utils.message_box("OK")
+
+    def settings_page(self, settings_form):
         self.utils = Utils(self)
         self.utils.initialize_test()
 
         self.utils.switch_to_main_frame()
-        self.utils.wait_for_home_to_load()
-        # self.utils.wait_for_loading_invisible()
+        # self.utils.wait_for_home_to_load()
+        self.utils.wait_for_loading_invisible()
 
         self.utils.select_ae_to_test()
         # Menu
         self.utils.switch_to_menu_frame()
         self.utils.select_menu("Settings")
 
-        settings_card_title = settings_from
+        settings_card_title = settings_form
         self.utils.click_settings_card(settings_card_title)
 
         self.utils.switch_to_main_frame()

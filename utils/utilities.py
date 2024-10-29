@@ -145,10 +145,15 @@ class Utils:
                                         select_value = combobox_value.text
                                         break
                             else:
-                                if len(combobox_values) == 0:
+                                if len(combobox_values) == 0 and reference:
                                     select_value = input_text
-                                else:
-                                    select_value = random.choice(combobox_values_dict)
+                                    self.util.send_keys(input_xpath, select_value)
+                                elif len(combobox_values) > 0:
+                                    is_no_electronic_invoice = True
+                                    while is_no_electronic_invoice:
+                                        if select_value != "No Electronic Invoice":
+                                            is_no_electronic_invoice = False
+                                            select_value = random.choice(combobox_values_dict)
                             self.util.click(
                                 f"//div[@data-mgcompname = '{compname}']//ul//td[contains(text(), '{select_value}')]")
                     if role == 'textbox':
