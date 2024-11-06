@@ -339,6 +339,50 @@
           }
         }
       ]
+    },
+    {
+      "default_einvoice_type": [
+        {
+          "einvoice_type": {
+            "compname": "EInvoiceTypeComboBox",
+            "selector": "data-mgcompnamevalue",
+            "role": "combobox",
+            "required": false,
+            "editable": false,
+            "reference": null,
+            "default": null,
+            "size": 255
+          }
+        }
+      ]
+    },
+    {
+      "customer_long_name": [
+        {
+          "customer_id": {
+            "compname": "ERPCodeEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": true,
+            "editable": true,
+            "reference": null,
+            "default": "TESTCUSTID",
+            "size": 255
+          }
+        },
+        {
+          "customer_long_name": {
+            "compname": "StandardCodeComboBox",
+            "selector": "data-mgcompnamevalue",
+            "role": "textarea",
+            "required": true,
+            "editable": true,
+            "reference": null,
+            "default": "Test description.",
+            "size": 255
+          }
+        }
+      ]
     }
   ]
 }

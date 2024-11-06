@@ -1,0 +1,100 @@
+{
+  "buttons": [
+    {
+      "add":[
+        {
+          "compname": "AddButton",
+          "selector": "data-mgcompname",
+          "type": "default",
+          "button_for": null,
+          "iframe": null
+        },
+        {
+          "compname": "add-button",
+          "selector": "id",
+          "type": "user_component",
+          "button_for": null,
+          "iframe": null
+        },
+        {
+          "compname": "AddUserDefinedButton",
+          "selector": "data-mgcompname",
+          "type": "default",
+          "button_for": "sd",
+          "iframe": null
+        }
+      ],
+      "modify": [
+        {
+          "compname": "ModifyButton",
+          "selector": "data-mgcompname",
+          "type": "default",
+          "button_for": null,
+          "iframe": null
+        },
+        {
+          "compname": "modify-button",
+          "selector": "id",
+          "type": "user_component",
+          "button_for": null,
+          "iframe": null
+        },
+        {
+          "compname": "ModifyUserDefinedButton",
+          "selector": "data-mgcompname",
+          "type": "default",
+          "button_for": "sd",
+          "iframe": null
+        }
+      ],
+      "delete": [
+        {
+          "compname": "DeleteButton",
+          "selector": "data-mgcompname",
+          "type": "default",
+          "button_for": null,
+          "iframe": null
+        },
+        {
+          "compname": "delete-button",
+          "selector": "id",
+          "type": "user_component",
+          "button_for": null,
+          "iframe": null
+        },
+        {
+          "compname": "UserDefinedButton",
+          "selector": "data-mgcompname",
+          "type": "default",
+          "button_for": "sd",
+          "iframe": null
+        }
+      ],
+      "save": [
+        {
+          "compname": "SaveButton",
+          "selector": "data-mgcompname",
+          "type": "default",
+          "button_for": null,
+          "iframe": null
+        }
+      ],
+      "cancel": [
+        {
+          "compname": "CancelButton",
+          "selector": "data-mgcompname",
+          "type": "default",
+          "button_for": null,
+          "iframe": null
+        },
+        {
+          "compname": "cancel-button",
+          "selector": "id",
+          "type": "user_component",
+          "button_for": null,
+          "iframe": null
+        }
+      ]
+    }
+  ]
+}

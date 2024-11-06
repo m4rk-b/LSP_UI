@@ -28,6 +28,18 @@ class Utils:
 
         return json_outputs
 
+    def read_button_components_json(self, button_name):
+        with open('../settings/button_components.json') as json_file:
+            button_components = json.load(json_file)
+
+        button_compnames = button_components.get('buttons', [])
+        buttons = None
+
+        for button_component in button_compnames:
+            buttons = button_component.get(f'{button_name}', [])
+
+        return buttons
+
     def initialize_test(self):
         load_dotenv()
         url = os.getenv("LSP_URL")
@@ -58,9 +70,13 @@ class Utils:
     def switch_to_user_control_button_frame(self):
         self.util.switch_to_default_content()
         self.switch_to_main_frame()
-        iframe_name = "mg_frame" + self.util.get_attribute("//div[@data-mgcompname = 'maintenanceToolbarUserControl']",
-                                                           "id")
-        self.util.switch_to_frame(iframe_name)
+        iframe_xpath = "//div[@data-mgcompname = 'maintenanceToolbarUserControl']"
+        is_exist = self.util.is_element_present(iframe_xpath)
+        if is_exist:
+            iframe_name = "mg_frame" + self.util.get_attribute(iframe_xpath, "id")
+            self.util.switch_to_frame(iframe_name)
+
+        return is_exist
 
     def wait_for_home_to_load(self):
         self.util.wait(10)
@@ -90,6 +106,39 @@ class Utils:
             self.util.click(
                 f"//div[@data-mgcompname = 'MG.MessageBox' and @aria-hidden = 'false']//a[@data-mgcompnamevalue = '{button_name}']")
             self.util.wait(0.5)
+
+    # Note: The button_for arg is for buttons with duplicate name, example are the ADD, MODIFY, and DELETE buttons in Supplementary Data Setup form
+    def find_button_and_click(self, button_name, button_for=None):
+        # button_for = button_for.lower()
+        button_name = button_name.lower()
+        button_compnames = self.read_button_components_json(button_name)
+        compname = None
+        selector = None
+        button_type = None
+        for button_compname in button_compnames:
+            if button_compname['button_for'] == button_for:
+                compname = button_compname['compname']
+                selector = button_compname['selector']
+                button_type = button_compname['type']
+
+            match button_type:
+                case "default":
+                    self.switch_to_main_frame()
+                    button_xpath = f"//div[@{selector} = '{compname}']//button"
+                    is_button_exist = self.util.is_element_visible(button_xpath)
+                    if is_button_exist:
+                        button_index = self.util.find_elements(button_xpath)
+                        self.util.click(f"//div[@{selector} = '{compname}' and {len(button_index)}]//button")
+                case "user_component":
+                    is_iframe = self.switch_to_user_control_button_frame()
+                    if is_iframe:
+                        button_xpath = f"//div[@class = 'buttonset']//button[@{selector}='{compname}']"
+                        is_button_present = self.util.is_element_present(button_xpath)
+                        if is_button_present:
+                            is_button_exist = self.util.is_element_visible(button_xpath)
+                            if is_button_exist:
+                                self.util.click(button_xpath)
+        self.util.wait(1)
 
     def click_button(self, mg_compname):
         button_index = self.util.find_elements(f"//div[@data-mgcompname = '{mg_compname}']//button")
@@ -145,15 +194,17 @@ class Utils:
                                         select_value = combobox_value.text
                                         break
                             else:
-                                if len(combobox_values) == 0 and reference:
+                                if len(combobox_values) == 0:
                                     select_value = input_text
                                     self.util.send_keys(input_xpath, select_value)
-                                elif len(combobox_values) > 0:
+                                elif len(combobox_values) > 0 and input_text is None:
                                     is_no_electronic_invoice = True
                                     while is_no_electronic_invoice:
+                                        select_value = random.choice(combobox_values_dict)
                                         if select_value != "No Electronic Invoice":
                                             is_no_electronic_invoice = False
-                                            select_value = random.choice(combobox_values_dict)
+                                elif len(combobox_values) > 0 and input_text is not None:
+                                    select_value = input_text
                             self.util.click(
                                 f"//div[@data-mgcompname = '{compname}']//ul//td[contains(text(), '{select_value}')]")
                     if role == 'textbox':
@@ -166,6 +217,9 @@ class Utils:
                             self.util.send_keys(input_xpath, select_value)
                     if role == 'textarea':
                         select_value = input_text
+                        # if editable:
+                        #     # self.util.update_text(textarea_xpath, select_value + Keys.ENTER)
+                        #     self.util.clear(textarea_xpath)
                         self.util.send_keys(textarea_xpath, select_value)
 
             self.util.wait(0.1)
