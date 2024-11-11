@@ -384,5 +384,23 @@
         }
       ]
     }
+  ],
+  "administration": [
+    {
+      "accounting_entity_maintenance": [
+        {
+          "accounting_entity": {
+            "compname": "AccountingEntitySubscriberEdit",
+            "selector": "data-mgcompnamevalue",
+            "role": "textbox",
+            "required": true,
+            "editable": false,
+            "reference": null,
+            "default": "TEST_AE",
+            "size": 255
+          }
+        }
+      ]
+    }
   ]
 }

@@ -1,18 +1,18 @@
-test_settings.py::HomeTest::test_customer_long_name
+test_settings.py::HomeTest::test_invoice_translation_maintenance
 --------------------------------------------------------------------
 Last Page: https://mingle-cqa-portal.cqa.inforcloudsuite.com/v2/LCLQA_AX1/59b159d4-4a16-422e-bedf-d57a5b0f139c
- Duration: 85.56s
-  Browser: Chrome 130.0.6723.93
+ Duration: 36.28s
+  Browser: Chrome 130.0.6723.117
    Driver: chromedriver 130.0.6723.69
-Timestamp: 1730858846  (Unix Timestamp)
-     Date: Wednesday, 6 November 2024
-     Time: 10:07:26 AM  (Malay Peninsula Standard Time, UTC+08:00)
+Timestamp: 1731294414  (Unix Timestamp)
+     Date: Monday, 11 November 2024
+     Time: 11:06:54 AM  (Malay Peninsula Standard Time, UTC+08:00)
 --------------------------------------------------------------------
 Traceback:
-  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\tests\test_settings.py", line 368, in test_customer_long_name
-    self.utils.message_box("Yes")
-  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\utils\utilities.py", line 106, in message_box
-    self.util.click(
+  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\tests\test_settings.py", line 150, in test_invoice_translation_maintenance
+    self.utils.translation_maintenance_combobox("Documentos Tributarios Electronicos (DTE)", "Tax Code")
+  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\utils\utilities.py", line 267, in translation_maintenance_combobox
+    self.util.click(f"//div[@data-mgcompname = 'OutputTypeComboBox']//td[contains(text(), '{output_type}')]")
   File "C:\Users\mbejasa\PycharmProjects\LSP_UI\.venv\Lib\site-packages\seleniumbase\fixtures\base_case.py", line 411, in click
     element = page_actions.wait_for_element_visible(
               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -21,4 +21,4 @@ Traceback:
   File "C:\Users\mbejasa\PycharmProjects\LSP_UI\.venv\Lib\site-packages\seleniumbase\fixtures\page_actions.py", line 255, in timeout_exception
     raise exc(msg)
 Exception: Message: 
- Element {//div[@data-mgcompname = 'MG.MessageBox' and @aria-hidden = 'false']//a[@data-mgcompnamevalue = 'Yes']} was not present after 7 seconds!
+ Element {//div[@data-mgcompname = 'OutputTypeComboBox']//td[contains(text(), 'Documentos Tributarios Electronicos (DTE)')]} was not present after 7 seconds!

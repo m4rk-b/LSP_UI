@@ -28,6 +28,23 @@ class Utils:
 
         return json_outputs
 
+    def read_admin_comp_json(self, form_name, input_field_name, menu):
+        #Todo: Update codes to make it more dynamic.
+        lsp_form_name = re.sub(r'[^a-zA-Z0-9]+', '_', form_name).strip('_')
+        lsp_form_name = lsp_form_name.lower()
+        input_field_name = input_field_name.lower()
+        with open(f'../settings/component_names.json') as json_file:
+            datas = json.load(json_file)
+
+        json_outputs = []
+        for data in datas[menu]:
+            if lsp_form_name in data:
+                for component in data[lsp_form_name]:
+                    if input_field_name in component:
+                        json_outputs.append(component[input_field_name])
+
+        return json_outputs
+
     def read_button_components_json(self, button_name):
         with open('../settings/button_components.json') as json_file:
             button_components = json.load(json_file)
@@ -78,6 +95,17 @@ class Utils:
 
         return is_exist
 
+    def switch_to_user_controls_frame(self, iframe):
+        self.util.switch_to_default_content()
+        self.switch_to_main_frame()
+        iframe_xpath = f"//div[@data-mgcompname = '{iframe}']"
+        is_exist = self.util.is_element_present(iframe_xpath)
+        if is_exist:
+            iframe_name = "mg_frame" + self.util.get_attribute(iframe_xpath, "id")
+            self.util.switch_to_frame(iframe_name)
+
+        return is_exist
+
     def wait_for_home_to_load(self):
         self.util.wait(10)
         self.wait_for_loading_invisible()
@@ -115,11 +143,13 @@ class Utils:
         compname = None
         selector = None
         button_type = None
+        button_iframe = None
         for button_compname in button_compnames:
             if button_compname['button_for'] == button_for:
                 compname = button_compname['compname']
                 selector = button_compname['selector']
                 button_type = button_compname['type']
+                button_iframe = button_compname['iframe']
 
             match button_type:
                 case "default":
@@ -130,7 +160,8 @@ class Utils:
                         button_index = self.util.find_elements(button_xpath)
                         self.util.click(f"//div[@{selector} = '{compname}' and {len(button_index)}]//button")
                 case "user_component":
-                    is_iframe = self.switch_to_user_control_button_frame()
+                    # is_iframe = self.switch_to_user_control_button_frame()
+                    is_iframe = self.switch_to_user_controls_frame(button_iframe)
                     if is_iframe:
                         button_xpath = f"//div[@class = 'buttonset']//button[@{selector}='{compname}']"
                         is_button_present = self.util.is_element_present(button_xpath)
@@ -152,10 +183,11 @@ class Utils:
         self.util.click(f"//div[@class = 'buttonset']//button[@id='{button_id}']")
         self.util.wait(1)
 
-    def input_text(self, settings_form, input_name_field, input_text=None):
+    def input_text(self, settings_form, input_name_field, menu_name, input_text=None):
         self.util.wait(0.5)
         select_value = None
-        input_elements = self.read_json_data(settings_form, input_name_field)
+        # input_elements = self.read_json_data(settings_form, input_name_field)
+        input_elements = self.read_admin_comp_json(settings_form, input_name_field, menu_name)
         for input_element in input_elements:
             compname = input_element['compname']
             selector = input_element['selector']
@@ -267,7 +299,7 @@ class Utils:
         path = os.path.normpath(os.path.join(os.path.dirname(__file__), f"../files/{file_to_upload}"))
         self.click_button("XSLTUploadButton")
         # self.input_text("uploadedfileinput", path, "name")
-        self.input_text(form_name, "select_file", path)
+        self.input_text(form_name, "select_file", "settings", path)
         self.util.click("//a[@aria-disabled = 'false']//span[contains(text(), 'Upload')]")
 
     def select_ae_to_test(self):
@@ -289,6 +321,14 @@ class Utils:
             self.util.click(f"//ul[@id = 'accordion2']//a[contains(text(), '{menu_name}')]", "xpath", 5)
         else:
             self.util.fail(f"Cannot find {menu_name} in the accordion.")
+
+    def select_admin_menu(self, submenu_name):
+        self.select_menu("Administration")
+        submenu_xpath = f"//div[@class = 'profile-sidebar']//ul//li[@itemscope = '{submenu_name}']"
+        if self.util.is_element_visible(submenu_xpath):
+            self.util.click(submenu_xpath)
+        else:
+            self.util.fail(f"Can't find {submenu_name}.")
 
     def click_settings_card(self, settings_name):
         self.switch_to_cards_frame()

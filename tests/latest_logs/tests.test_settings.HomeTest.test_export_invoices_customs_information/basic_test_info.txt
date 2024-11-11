@@ -1,0 +1,23 @@
+test_settings.py::HomeTest::test_export_invoices_customs_information
+--------------------------------------------------------------------
+Last Page: https://mingle-cqa-portal.cqa.inforcloudsuite.com/v2/LCLQA_AX1/59b159d4-4a16-422e-bedf-d57a5b0f139c
+ Duration: 17.27s
+  Browser: Chrome 130.0.6723.117
+   Driver: chromedriver 130.0.6723.69
+Timestamp: 1731294352  (Unix Timestamp)
+     Date: Monday, 11 November 2024
+     Time: 11:05:52 AM  (Malay Peninsula Standard Time, UTC+08:00)
+--------------------------------------------------------------------
+Traceback:
+  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\tests\test_settings.py", line 69, in test_export_invoices_customs_information
+    settings_card_title = self.settings_page("Export Invoices - Customs Information")
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\tests\test_settings.py", line 387, in settings_page
+    self.utils.select_ae_to_test()
+  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\utils\utilities.py", line 316, in select_ae_to_test
+    self.util.fail(f"You're not subscribe to {ae}.")
+  File "C:\Users\mbejasa\PycharmProjects\LSP_UI\.venv\Lib\site-packages\seleniumbase\fixtures\base_case.py", line 8309, in fail
+    super().fail(msg)
+  File "C:\Users\mbejasa\AppData\Local\Programs\Python\Python312\Lib\unittest\case.py", line 715, in fail
+    raise self.failureException(msg)
+Exception: You're not subscribe to MX_M3.
